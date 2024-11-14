@@ -29,8 +29,11 @@ public class Task {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false, insertable = false, updatable = false)
     private Project project;
+
+    @Column(name = "project_id", nullable = false)
+    private int projectId;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -41,8 +44,8 @@ public class Task {
     }
 
     public enum Status {
-        PENDING,
-        IN_PROGRESS,
-        COMPLETED
+        PENDIENTE,
+        EN_PROGRESO,
+        COMPLETADO
     }
 }
