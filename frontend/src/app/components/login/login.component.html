@@ -1,0 +1,35 @@
+<div class="auth-wrapper">
+    <div class="auth-content">
+      <div class="auth-image">
+        <img src="https://img.freepik.com/free-vector/hand-drawn-business-planning-with-task-list_23-2149164275.jpg?semt=ais_hybrid" alt="Imagen de autenticación">
+      </div>
+      <div class="auth-form">
+        <h2>Acceder</h2>
+        <form (ngSubmit)="onSubmit()">
+          <div class="field-group">
+            <label for="email">Correo</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              [(ngModel)]="email" 
+              placeholder="Ingresa tu correo" 
+              required>
+          </div>
+          <div class="field-group">
+            <label for="password">Clave</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              [(ngModel)]="password" 
+              placeholder="Ingresa tu clave" 
+              required>
+          </div>
+          <button type="submit" class="btn-submit">Acceder</button>
+        </form>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </div>
+    </div>
+  </div>
+  

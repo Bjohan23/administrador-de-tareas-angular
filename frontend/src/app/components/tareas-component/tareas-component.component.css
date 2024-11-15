@@ -1,0 +1,134 @@
+/* Estilos generales para el contenedor */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Estilos para el título de la sección */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  /* Estilos para la tabla */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+  }
+  
+  /* Estilos para los encabezados de la tabla */
+  th {
+    background-color: #007bff;
+    color: white;
+    text-align: left;
+    padding: 12px;
+  }
+  
+  /* Estilos para las celdas de la tabla */
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Resaltar las celdas de la tabla al pasar el mouse */
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Estilos para los botones dentro de la tabla */
+  button {
+    margin: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  /* Estilos específicos para el botón de editar */
+  .btn-warning {
+    background-color: #ffc107;
+    color: white;
+  }
+  
+  .btn-warning:hover {
+    background-color: #e0a800;
+  }
+  
+  /* Estilos específicos para el botón de eliminar */
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+  }
+  
+  /* Ajustes para la tabla en dispositivos pequeños */
+  @media (max-width: 768px) {
+    table {
+      font-size: 14px;
+    }
+    th, td {
+      padding: 10px;
+    }
+  }
+  
+
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 30px;
+  }
+  
+  /* Barra de Navegación */
+  .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ff7f50; /* Color coral */
+    padding: 10px 0;
+    border-radius: 5px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 50px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #333;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    background-color: #007bff; /* Azul brillante en hover */
+    padding: 12px 30px; /* Aumenta el tamaño al pasar el ratón */
+  }
+  
+  .nav-links a.active {
+    color: #fff;
+    background-color: #007bff; /* Azul al estar activo */
+    padding: 12px 30px;
+    border-radius: 5px;
+  }
+  

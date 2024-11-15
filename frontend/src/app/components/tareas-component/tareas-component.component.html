@@ -1,0 +1,79 @@
+<div class="container">
+    <h1>Gestión de Tareas</h1>
+
+    <!-- Menú de navegación -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a (click)="navigateTo('/usuarios')">Usuarios</a></li>
+            <li><a (click)="navigateTo('/proyectos')">Proyectos</a></li>
+            <li><a (click)="navigateTo('/tareas')">Tareas</a></li>
+        </ul>
+    </nav>
+    <hr />
+
+    <!-- Filtro de tareas por proyecto -->
+    <div class="form-group">
+        <label for="projectFilter">Filtrar por Proyecto</label>
+        <select id="projectFilter" [(ngModel)]="projectFilter" (change)="onProjectFilterChange()" class="form-control">
+            <option value="">Todos</option>
+            <option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</option>
+        </select>
+    </div>
+
+    <!-- Formulario de tarea (Crear/Editar) -->
+    <div *ngIf="currentTask" class="form-container">
+        <h2>{{ currentTask.id ? 'Editar' : 'Crear' }} Tarea</h2>
+        <form (ngSubmit)="currentTask.id ? updateTask() : createTask()">
+            <div class="form-group">
+                <label for="title">Título</label>
+                <input type="text" id="title" [(ngModel)]="currentTask.title" name="title" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <input type="text" id="description" [(ngModel)]="currentTask.description" name="description" class="form-control" required>
+            </div>
+
+            <!-- Selección del Proyecto -->
+            <div class="form-group">
+                <label for="project">Proyecto</label>
+                <select id="project" [(ngModel)]="currentTask.projectId" name="project" class="form-control" required>
+                    <option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Tabla de tareas -->
+<div class="container">
+    <h1>Lista de Tareas</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+             
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of filteredTasks">
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.status }}</td>
+                
+                <td>
+                  
+                    <button class="btn btn-danger" (click)="deleteTask(task.id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
