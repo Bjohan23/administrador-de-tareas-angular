@@ -108,8 +108,7 @@ public class TaskServiceImpl implements TaskService {
             registro.setTitle(task.getTitle());
             registro.setStatus(task.getStatus());
             registro.setProject(task.getProject());
-            repository.save(registro);
-            return registro;
+            return repository.save(registro);
         } catch (ValidateException | NoDataFoundException e) {
             throw e;
         } catch (Exception e) {

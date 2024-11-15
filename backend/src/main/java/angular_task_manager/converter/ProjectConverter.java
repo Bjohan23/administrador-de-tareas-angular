@@ -1,29 +1,32 @@
+// ProjectConverter.java
 package angular_task_manager.converter;
 
 import angular_task_manager.dto.ProjectDto;
 import angular_task_manager.entity.Project;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class ProjectConverter {
 
     public ProjectDto fromEntity(Project entity) {
-        if (entity == null) return null;
-        return ProjectDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .userId(entity.getUser().getId())
-                .createdAt(entity.getCreatedAt().toString())
-                .build();
+        ProjectDto dto = new ProjectDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription());
+        dto.setUserId(entity.getUser().getId());
+        dto.setCreatedAt(entity.getCreatedAt().toString());
+        return dto;
     }
 
     public Project fromDTO(ProjectDto dto) {
-        if (dto == null) return null;
-        return Project.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .build();
+        Project entity = new Project();
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setUserId(dto.getUserId());
+        entity.setCreatedAt(LocalDateTime.parse(dto.getCreatedAt()));
+        return entity;
     }
 }

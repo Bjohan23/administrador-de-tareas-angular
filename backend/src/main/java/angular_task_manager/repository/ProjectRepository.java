@@ -1,12 +1,10 @@
 package angular_task_manager.repository;
 
 import angular_task_manager.entity.Project;
+import angular_task_manager.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
-    List<Project> findByUserId(int userId);
+    List<Project> findByUser(User user);  // Cambiado para usar el objeto User en lugar de userId
 }

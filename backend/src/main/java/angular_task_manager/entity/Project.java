@@ -25,6 +25,9 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Transient
+    private int userId;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -38,5 +41,9 @@ public class Project {
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
+    }
+
+    public void getUserId(int userId) {
+        this.userId = userId;
     }
 }

@@ -81,24 +81,30 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User save(User user) {
         try {
-
             UserValidator.save(user);
-            // Nuevo registro
-            if (user.getId() == 0) {
-                user.setPassword(user.getPassword());
-                User nuevo = repository.save(user);
-                return nuevo;
+
+            // Verificar si el correo electrónico ya existe
+            User existingUser = repository.findByEmail(user.getEmail());
+            if (existingUser != null && existingUser.getId() != user.getId()) {
+                throw new ValidateException("El correo electrónico ya está en uso");
             }
-            // editar registro
-            User registro = repository.findById(user.getId())
-                    .orElseThrow(() -> new NoDataFoundException("No existe un registro con ese ID"));
-            registro.setEmail(user.getEmail());
-            registro.setPassword(user.getPassword());
-            repository.save(registro);
-            return registro;
+
+            // Editar registro
+            if (user.getId() != 0) {
+                User registro = repository.findById(user.getId())
+                        .orElseThrow(() -> new NoDataFoundException("No existe un registro con ese ID"));
+                registro.setEmail(user.getEmail());
+                registro.setName(user.getName());
+                registro.setPassword(user.getPassword());
+                return repository.save(registro);
+            }
+
+            // Nuevo registro
+            user.setPassword(user.getPassword());
+            return repository.save(user);
         } catch (ValidateException | NoDataFoundException e) {
             throw e;
-        } catch (GeneralException e) {
+        } catch (Exception e) {
             throw new GeneralException("Error del servidor");
         }
     }

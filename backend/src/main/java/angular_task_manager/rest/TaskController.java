@@ -50,7 +50,7 @@ public class TaskController {
     public ResponseEntity<String> delete(@PathVariable("id") int id) {
         try {
             service.delete(id); // Llama al servicio para eliminar el usuario por ID
-            return new WrapperResponse(true, "Usuario eliminado exitosamente", null).createResponse(HttpStatus.NO_CONTENT);
+            return new WrapperResponse(true, "Usuario eliminado exitosamente", null).createResponse(HttpStatus.OK);
         } catch (Exception e) {
             return new WrapperResponse(false, e.getMessage(), null).createResponse(HttpStatus.BAD_REQUEST);
         }
