@@ -16,7 +16,7 @@ public class ProjectConverter {
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setUserId(entity.getUser().getId());
-        dto.setCreatedAt(entity.getCreatedAt().toString());
+
         return dto;
     }
 
@@ -26,7 +26,7 @@ public class ProjectConverter {
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setUserId(dto.getUserId());
-        entity.setCreatedAt(LocalDateTime.parse(dto.getCreatedAt()));
+
         return entity;
     }
 }

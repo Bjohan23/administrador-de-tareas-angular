@@ -1,79 +1,81 @@
-<div class="container">
-    <h1>Gestión de Proyectos</h1>
-    <nav class="navbar">
-      <ul class="nav-links">
-        <li><a (click)="navigateTo('/usuarios')">Usuarios</a></li>
-        <li><a (click)="navigateTo('/proyectos')">Proyectos</a></li>
-        <li><a (click)="navigateTo('/tareas')">Tareas</a></li>
-      </ul>
-    </nav>
-    <hr />
-  </div>
-  
-  <div class="main-content">
-    <h1>Lista de Proyectos</h1>
-    
-    <!-- Tabla de proyectos -->
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Usuario</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let project of projects">
-          <td>{{ project.id }}</td>
-          <td>{{ project.name }}</td>
-          <td>{{ project.description }}</td>
-          <td>{{ nombre }}</td>
-          <td>
-            <button class="btn btn-warning" (click)="onEdit(project.id)">Editar</button>
-            <button class="btn btn-danger" (click)="deleteProject(project.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <button class="btn btn-primary" (click)="onRegister()">Registrar Nuevo Proyecto</button>
-  </div>
-  
-  <!-- Formulario de registro y edición -->
-  <div *ngIf="!isEditing" class="form-container">
-    <h2>Registrar Nuevo Proyecto</h2>
-    <form (ngSubmit)="onSubmit()">
-      <label for="name">Nombre:</label>
-      <input type="text" [(ngModel)]="project.name" name="name" required>
-  
-      <label for="description">Descripción:</label>
-      <input type="text" [(ngModel)]="project.description" name="description" required>
-  
-      <label for="userId">ID del Usuario:</label>
-      <input type="number" [(ngModel)]="project.userId" name="userId" required>
-  
-      <button type="submit" class="btn btn-success">Registrar</button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-    </form>
-  </div>
-  
-  <!-- Formulario de edición -->
-  <div *ngIf="isEditing" class="form-container">
-    <h2>Editar Proyecto</h2>
-    <form (ngSubmit)="onSubmit()">
-      <label for="name">Nombre:</label>
-      <input type="text" [(ngModel)]="project.name" name="name" required>
-  
-      <label for="description">Descripción:</label>
-      <input type="text" [(ngModel)]="project.description" name="description" required>
-  
-      <label for="userId">ID del Usuario:</label>
-      <input type="number" [(ngModel)]="project.userId" name="userId" required>
-  
-      <button type="submit" class="btn btn-success">Actualizar</button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-    </form>
-  </div>
-  
+    <div class="container">
+      <h1>Gestión de Proyectos</h1>
+      <nav class="navbar">
+        <ul class="nav-links">
+          <li><a (click)="navigateTo('/usuarios')">Usuarios</a></li>
+          <li><a (click)="navigateTo('/proyectos')">Proyectos</a></li>
+          <li><a (click)="navigateTo('/tareas')">Tareas</a></li>
+        </ul>
+      </nav>
+      <hr />
+    </div>
+
+    <div class="main-content">
+      <h1>Lista de Proyectos</h1>
+
+      <!-- Tabla de proyectos -->
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Usuario</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of projects; let i = index">
+            <td>{{ project.id }}</td>
+            <td>{{ project.name }}</td>
+            <td>{{ project.description }}</td>
+            <td>{{ nombre[i] }}</td>  <!-- Mostrar el nombre asociado a este índice -->
+            <td>
+              <button class="btn btn-warning" (click)="onEdit(project.id)">Editar</button>
+              <button class="btn btn-danger" (click)="deleteProject(project.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn btn-primary" (click)="onRegister()">Registrar Nuevo Proyecto</button>
+    </div>
+
+    <!-- Formulario de registro y edición -->
+    <div *ngIf="!isEditing" class="form-container">
+      <h2>Registrar Nuevo Proyecto</h2>
+      <form (ngSubmit)="onSubmit()">
+        <label for="name">Nombre:</label>
+        <input type="text" [(ngModel)]="project.name" name="name" required>
+
+        <label for="description">Descripción:</label>
+        <input type="text" [(ngModel)]="project.description" name="description" required>
+
+        <label for="userId">ID del Usuario:</label>
+        <select [(ngModel)]="project.userId" name="userId" required>
+          <option value="" disabled selected>Seleccione un usuario</option>
+          <option *ngFor="let user of listUsuario" [value]="user.id">
+            {{ user.name }}
+          </option>
+        </select>
+        
+        <button type="submit" class="btn btn-success">Registrar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+      </form>
+    </div>
+
+    <!-- Formulario de edición -->
+    <div *ngIf="isEditing" class="form-container">
+      <h2>Editar Proyecto</h2>
+      <form (ngSubmit)="onSubmit()">
+        <label for="name">Nombre:</label>
+        <input type="text" [(ngModel)]="project.name" name="name" required>
+
+        <label for="description">Descripción:</label>
+        <input type="text" [(ngModel)]="project.description" name="description" required>
+
+
+        <button type="submit" class="btn btn-success">Actualizar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+      </form>
+    </div>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Task } from '../../models/task';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
-import { ProyectosService } from '../../services/proyectos.service';  // Asegúrate de tener este servicio
+import { ProyectosService } from '../../services/proyectos.service'; // Asegúrate de tener este servicio
 import { Router } from '@angular/router';
+import { Project } from '../../models/project'; // Asegúrate de importar Project
 
 @Component({
   selector: 'app-tareas-component',
@@ -15,10 +16,11 @@ import { Router } from '@angular/router';
 })
 export class TareasComponentComponent {
   tasks: Task[] = [];
-  projects: any[] = [];
+  projects: Project[] = [];  // Definir el array de proyectos
   filteredTasks: Task[] = [];
-  currentTask: Task | null = null;  // Se asegura de que la tarea se inicie como null
+  currentTask: Task = new Task(0,'','','PENDIENTE', 0 );  // Se asegura de que la tarea se inicie como null
   projectFilter: string = '';  // Variable para almacenar el filtro del proyecto
+  taskName: string[] = []; // Array para almacenar los nombres de proyectos asociados a tareas
 
   constructor(
     private taskService: TaskService,
@@ -28,15 +30,25 @@ export class TareasComponentComponent {
 
   ngOnInit(): void {
     this.loadTasksAndProjects();
+    this.loadName();
   }
-
+  
+  loadName(){
+    this.tasks.forEach((task, index) => {
+      this.projectService.getProjectById(task.projectId).subscribe((response)=> {
+        this.taskName[index] = response.body.name;
+      });
+    });
+  }
   loadTasksAndProjects(): void {
-    // Cargar tareas y proyectos
+    // Cargar tareas
     this.taskService.getTasks().subscribe((taskResponse) => {
       this.tasks = taskResponse.body;  // Supón que la respuesta tiene un body con las tareas
-      this.filteredTasks = this.tasks; // Inicializamos filteredTasks con todas las tareas
+      console.log(this.tasks   )
     });
+    
 
+    // Cargar proyectos
     this.projectService.getProjects().subscribe((projectResponse) => {
       this.projects = projectResponse.body;  // Supón que la respuesta tiene un body con los proyectos
     });
@@ -53,7 +65,10 @@ export class TareasComponentComponent {
 
   // Editar tarea
   onEdit(id: number): void {
-    this.router.navigate([`/editar-tarea/${id}`]);  // Navegar a la página de edición de la tarea
+    // Buscar la tarea por id y cargarla en currentTask
+    this.taskService.getTaskById(id).subscribe(task => {
+      this.currentTask = task.body; // Asumiendo que la respuesta tiene un body con la tarea
+    });
   }
 
   // Eliminar tarea
@@ -64,30 +79,45 @@ export class TareasComponentComponent {
       });
     }
   }
-
+  createNewTask(): void{
+    this.currentTask = new Task(
+      0,                      // ID vacío para la nueva tarea
+      '',                     // Título vacío
+      '',                     // Descripción vacía
+      'PENDIENTE',                 
+      0
+    );
+  }
   // Crear o editar tarea
   createTask(): void {
-    this.taskService.createTask(this.currentTask!).subscribe(() => {
-      this.loadTasksAndProjects();
-      this.resetForm();
-    });
+    if (this.currentTask) {
+      let numero = +this.currentTask?.projectId;
+      this.currentTask.projectId = numero;
+      
+      this.taskService.createTask(this.currentTask!).subscribe(() => {
+        this.loadTasksAndProjects();
+        this.resetForm();
+      });
+    }else {
+      console.error("currentTask is null or undefined");
+    }
   }
 
   updateTask(): void {
     if (this.currentTask) {
+      // Llamada al servicio para actualizar la tarea existente
       this.taskService.updateTask(this.currentTask?.id, this.currentTask!).subscribe(() => {
         this.loadTasksAndProjects();
         this.resetForm();
       });
     } else {
-    console.error('No hay tarea para crear');
-  }
-
+      console.error('No hay tarea para actualizar');
+    }
   }
 
   // Resetear formulario
   resetForm(): void {
-    this.currentTask = null;
+    this.currentTask = new Task(0,'','','', 0 );
   }
 
   // Navegar a otras páginas

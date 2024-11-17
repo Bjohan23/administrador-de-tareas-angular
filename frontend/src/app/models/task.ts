@@ -5,17 +5,16 @@ export class Task {
   title: string;
   description: string;
   status: string;
-  project: Project; 
-  projectId: number;
-  createdAt: string;
 
-  constructor(id: number, title: string, description: string, status: string, project: Project, projectId: number, createdAt: string) {
+  projectId: number;
+
+
+  constructor(id: number, title: string, description: string, status: string, projectId: number) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.status = status;
-    this.project = project;
+
     this.projectId = projectId;
-    this.createdAt = createdAt;
   }
 }

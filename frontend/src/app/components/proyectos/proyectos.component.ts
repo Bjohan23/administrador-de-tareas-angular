@@ -3,6 +3,8 @@ import { Project } from '../../models/project';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
+
+import { User } from '../../models/user';
 import { ProyectosService } from '../../services/proyectos.service';
 import { UsuariosService } from '../../services/usuarios.service';
 @Component({
@@ -12,24 +14,40 @@ import { UsuariosService } from '../../services/usuarios.service';
   templateUrl: './proyectos.component.html',
   styleUrl: './proyectos.component.css'
 })
-export class ProyectosComponent {
-  projects: Project[] = [];
-  isEditing: boolean = false;
-  project: Project = new Project(0, '', '', 0, new Date());
-  nombre: string = '';
-  constructor(private usuariosService: UsuariosService, private proyectosService: ProyectosService, private router: Router) {}
+  export class ProyectosComponent {
+    projects: Project[] = [];
 
-  ngOnInit(): void {
-    this.loadProjects();
+    isEditing: boolean = false;
+    project: Project = new Project(0, '', '', 0);
+    nombre: string[] = []; 
+    listUsuario: User[] = [];
+    constructor(
+      private usuariosService: UsuariosService, 
+      private proyectosService: ProyectosService, 
+      private router: Router,
+      ) {}
+
+
+    ngOnInit(): void {
+      this.loadProjects();
+      this.cargaUsuarios();
+
+    }
+
+  cargaUsuarios(){
+    this.usuariosService.getUsers().subscribe(response =>{
+      this.listUsuario = response.body;
+    })
+    console.log( this.listUsuario);
   }
-
   // Cargar todos los proyectos
   loadProjects(): void {
     this.proyectosService.getProjects().subscribe(response => {
       this.projects = response.body; 
-      this.projects.forEach((project) => {
+      console.log( this.projects);
+      this.projects.forEach((project, index) => {
         this.usuariosService.getUserById(project.userId).subscribe(userResponse => {
-          this.nombre = userResponse.body?.name; // Guardamos el nombre del cliente en una propiedad nueva del proyecto
+          this.nombre[index]= (userResponse.body?.name); // Guardamos el nombre del cliente en una propiedad nueva del proyecto
         });
       });// Suponiendo que la respuesta tiene un cuerpo con los proyectos
     });
@@ -51,12 +69,14 @@ export class ProyectosComponent {
 
   // Mostrar el formulario para registrar o editar un proyecto
   onRegister(): void {
-    this.isEditing = false;  // No es modo de edición
-    this.project = new Project(0, '', '', 0, new Date());  // Limpiar el formulario
+    this.isEditing = false;
+
+    this.project = new Project(0, '', '', 0);  // Limpiar el formulario
   }
 
   // Método para editar un proyecto
   onEdit(id: number): void {
+    
     this.isEditing = true;  // Establecer en true para editar
     this.proyectosService.getProjectById(id).subscribe(response => {
       this.project = response.body;
@@ -65,6 +85,8 @@ export class ProyectosComponent {
 
   // Enviar el formulario de registro o edición
   onSubmit(): void {
+    this.project.userId = +this.project.userId;
+    console.log(this.project);  
     if (this.isEditing) {
       this.proyectosService.updateProject(this.project.id, this.project).subscribe(() => {
         this.loadProjects();

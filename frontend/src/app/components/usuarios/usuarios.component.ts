@@ -65,6 +65,7 @@ onEdit(id: number): void {
 
   // Enviar el formulario de registro o edición
   onSubmit(): void {
+    console.log(this.user)
     if (this.isEditing) {
       this.userService.updateUser(this.user.id, this.user).subscribe(() => {
         this.loadUsers();
